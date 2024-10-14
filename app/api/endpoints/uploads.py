@@ -767,7 +767,7 @@ async def upload_and_integrate(doc_urls: DocumentUrls):
 
 @router.post("/import-bulletins-from-directory")
 async def import_bulletins_from_directory():
-    bulletin_dir = r"C:\Users\AndyVESPUCE\bulletin-espi\backend\outputs\bulletins"
+    bulletin_dir = os.path.join(os.getenv('BASE_DIR', '/code'), 'outputs', 'bulletins')
 
     if not os.path.exists(bulletin_dir):
         logger.error(f"Bulletin directory not found: {bulletin_dir}")

@@ -2,22 +2,27 @@ FROM python:3.11
 
 WORKDIR /code
 
-# Install LibreOffice for DOCX to PDF conversion
+# Installer LibreOffice pour la conversion DOCX vers PDF
 RUN apt-get update && apt-get install -y libreoffice
 
-# Copy the requirements file and install dependencies
+# Copier les dépendances et installer
 COPY ./requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-# Copy the rest of the application code
+# Créer les répertoires nécessaires
+RUN mkdir -p /code/documents /code/downloads /code/excel /code/template /code/json
+
+# Copier les fichiers nécessaires dans les répertoires adéquats
 COPY ./app /code/app
 COPY ./excel /code/excel  
 COPY ./template /code/template  
-COPY ./json /code/json 
+COPY ./json /code/json
 
-RUN mkdir -p /code/documents /code/downloads
+# Copie du fichier .env (si nécessaire)
+COPY ./.env /code/.env
 
-# Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "443"]
+# Définir les permissions si nécessaire
+RUN chmod -R 755 /code
 
-
+# Lancer l'application
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]

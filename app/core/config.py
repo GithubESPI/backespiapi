@@ -3,7 +3,7 @@ import os
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Upload de Bulletins"
-    BASE_DIR: str = os.getenv('BASE_DIR', os.getcwd())
+    BASE_DIR: str = os.getenv('BASE_DIR', '/code')
 
     # DOCUMENTS_DIR: str = os.path.join(os.getenv('USERPROFILE', os.getenv('HOME')), 'Documents')
     DOCUMENTS_DIR: str = os.path.join(BASE_DIR, 'documents')
@@ -146,6 +146,7 @@ class Settings(BaseSettings):
     # Paramètres d'API externe
     YPAERO_BASE_URL: str
     YPAERO_API_TOKEN: str
+    BASE_DIR: str
 
     class Config:
         # Chargez les variables d'environnement à partir d'un fichier .env situé à la racine du projet.
