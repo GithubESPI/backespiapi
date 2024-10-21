@@ -130,8 +130,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [6, 7]
             },
-            "BG-ALT-1":{
-                "key": "BG-ALT-1",
+            "BG_ALT_1":{
+                "key": "BG_ALT_1",
                 "titles_row": df_titles.iloc[0, 2:20].tolist(),
                 "template_word": settings.BG_ALT_1_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 7, 8, 10, 12, 14, 15, 16, 17, 18, 19],
@@ -143,8 +143,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [9, 10, 11, 14]
             },
-            "BG-ALT-2":{
-                "key": "BG-ALT-2",
+            "BG_ALT_2":{
+                "key": "BG_ALT_2",
                 "titles_row": df_titles.iloc[0, 2:21].tolist(),
                 "template_word": settings.BG_ALT_2_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 17, 18, 19, 20],
@@ -156,8 +156,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [11, 12, 13, 14, 15]
             },
-            "BG-ALT-3":{
-                "key": "BG-ALT-3",
+            "BG_ALT_3":{
+                "key": "BG_ALT_3",
                 "titles_row": df_titles.iloc[0, 2:19].tolist(),
                 "template_word": settings.BG_ALT_3_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 6, 7, 9, 10, 12, 14, 15, 16, 17, 18],
@@ -169,8 +169,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [4, 11, 12, 13]
             },
-            "BG-ALT-4":{
-                "key": "BG-ALT-4",
+            "BG_ALT_4":{
+                "key": "BG_ALT_4",
                 "titles_row": df_titles.iloc[0, 2:18].tolist(),
                 "template_word": settings.BG_ALT_4_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 7, 8, 9, 11, 13, 14, 15, 16, 17],
@@ -182,8 +182,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [11, 12, 13]
             },
-            "BG-ALT-5":{
-                "key": "BG-ALT-5",
+            "BG_ALT_5":{
+                "key": "BG_ALT_5",
                 "titles_row": df_titles.iloc[0, 2:20].tolist(),
                 "template_word": settings.BG_ALT_5_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 7, 8, 9, 11, 13, 14, 15, 16, 17, 18, 19],
@@ -195,8 +195,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [10, 11, 12, 14]
             },
-            "BG-ALT-6":{
-                "key": "BG-ALT-6",
+            "BG_ALT_6":{
+                "key": "BG_ALT_6",
                 "titles_row": df_titles.iloc[0, 2:18].tolist(),
                 "template_word": settings.BG_ALT_6_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 6, 7, 9, 10, 12, 13, 14, 15, 16, 17],
@@ -208,8 +208,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [9, 12]
             },
-            "BG-TP-1":{
-                "key": "BG-TP-1",
+            "BG_TP_1":{
+                "key": "BG_TP_1",
                 "titles_row": df_titles.iloc[0, 2:28].tolist(),
                 "template_word": settings.BG_TP_1_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27],
@@ -221,8 +221,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [16, 17, 18, 20, 21, 22]
             },
-            "BG-TP-2":{
-                "key": "BG-TP-2",
+            "BG_TP_2":{
+                "key": "BG_TP_2",
                 "titles_row": df_titles.iloc[0, 2:5].tolist(),
                 "template_word": settings.BG_TP_2_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4],
@@ -231,8 +231,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": []
             },
-            "BG-TP-3":{
-                "key": "BG-TP-3",
+            "BG_TP_3":{
+                "key": "BG_TP_3",
                 "titles_row": df_titles.iloc[0, 2:21].tolist(),
                 "template_word": settings.BG_TP_3_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 19, 20],
@@ -244,8 +244,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [13, 14, 15]
             },
-            "BG-TP-4":{
-                "key": "BG-TP-4",
+            "BG_TP_4":{
+                "key": "BG_TP_4",
                 "titles_row": df_titles.iloc[0, 2:4].tolist(),
                 "template_word": settings.BG_TP_4_TEMPLATE_WORD,
                 "grade_column_indices": [3],
@@ -254,8 +254,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": []
             },
-            "BG-TP-5":{
-                "key": "BG-TP-5",
+            "BG_TP_5":{
+                "key": "BG_TP_5",
                 "titles_row": df_titles.iloc[0, 2:25].tolist(),
                 "template_word": settings.BG_TP_5_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5, 6, 7, 9, 11, 12, 13, 15, 17, 19, 20, 21, 22, 23, 24],
@@ -267,8 +267,8 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
                 },
                 "hidden_ects": [15, 16, 18]
             },
-            "BG-TP-6":{
-                "key": "BG-TP-6",
+            "BG_TP_6":{
+                "key": "BG_TP_6",
                 "titles_row": df_titles.iloc[0, 2:6].tolist(),
                 "template_word": settings.BG_TP_6_TEMPLATE_WORD,
                 "grade_column_indices": [3, 4, 5],
@@ -301,29 +301,29 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
         elif filename in [os.path.basename(settings.M2_S4_MAPI_TEMPLATE), os.path.basename(settings.M2_S4_MAGI_TEMPLATE), os.path.basename(settings.M2_S4_MEFIM_TEMPLATE), os.path.basename(settings.M2_S4_MAPI_TEMPLATE_NOT_EMPTY), os.path.basename(settings.M2_S4_MAGI_TEMPLATE_NOT_EMPTY), os.path.basename(settings.M2_S4_MEFIM_TEMPLATE_NOT_EMPTY)]:
             case_key = "M2_S4"
         elif filename in [os.path.basename(settings.BG_ALT_1_TEMPLATE), os.path.basename(settings.BG_ALT_1_TEMPLATE), os.path.basename(settings.BG_ALT_1_TEMPLATE), os.path.basename(settings.BG_ALT_1_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_1_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_1_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-ALT-1"
+            case_key = "BG_ALT_1"
         elif filename in [os.path.basename(settings.BG_ALT_2_TEMPLATE), os.path.basename(settings.BG_ALT_2_TEMPLATE), os.path.basename(settings.BG_ALT_2_TEMPLATE), os.path.basename(settings.BG_ALT_2_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_2_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_2_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-ALT-2"
+            case_key = "BG_ALT_2"
         elif filename in [os.path.basename(settings.BG_ALT_3_TEMPLATE), os.path.basename(settings.BG_ALT_3_TEMPLATE), os.path.basename(settings.BG_ALT_3_TEMPLATE), os.path.basename(settings.BG_ALT_3_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_3_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_3_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-ALT-3"
+            case_key = "BG_ALT_3"
         elif filename in [os.path.basename(settings.BG_ALT_4_TEMPLATE), os.path.basename(settings.BG_ALT_4_TEMPLATE), os.path.basename(settings.BG_ALT_4_TEMPLATE), os.path.basename(settings.BG_ALT_4_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_4_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_4_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-ALT-4"
+            case_key = "BG_ALT_4"
         elif filename in [os.path.basename(settings.BG_ALT_5_TEMPLATE), os.path.basename(settings.BG_ALT_5_TEMPLATE), os.path.basename(settings.BG_ALT_5_TEMPLATE), os.path.basename(settings.BG_ALT_5_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_5_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_5_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-ALT-5"
+            case_key = "BG_ALT_5"
         elif filename in [os.path.basename(settings.BG_ALT_6_TEMPLATE), os.path.basename(settings.BG_ALT_6_TEMPLATE), os.path.basename(settings.BG_ALT_6_TEMPLATE), os.path.basename(settings.BG_ALT_6_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_6_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_ALT_6_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-ALT-6"
+            case_key = "BG_ALT_6"
         elif filename in [os.path.basename(settings.BG_TP_1_TEMPLATE), os.path.basename(settings.BG_TP_1_TEMPLATE), os.path.basename(settings.BG_TP_1_TEMPLATE), os.path.basename(settings.BG_TP_1_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_1_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_1_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-TP-1"
+            case_key = "BG_TP_1"
         elif filename in [os.path.basename(settings.BG_TP_2_TEMPLATE), os.path.basename(settings.BG_TP_2_TEMPLATE), os.path.basename(settings.BG_TP_2_TEMPLATE), os.path.basename(settings.BG_TP_2_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_2_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_2_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-TP-2"
+            case_key = "BG_TP_2"
         elif filename in [os.path.basename(settings.BG_TP_3_TEMPLATE), os.path.basename(settings.BG_TP_3_TEMPLATE), os.path.basename(settings.BG_TP_3_TEMPLATE), os.path.basename(settings.BG_TP_3_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_3_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_3_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-TP-3"
+            case_key = "BG_TP_3"
         elif filename in [os.path.basename(settings.BG_TP_4_TEMPLATE), os.path.basename(settings.BG_TP_4_TEMPLATE), os.path.basename(settings.BG_TP_4_TEMPLATE), os.path.basename(settings.BG_TP_4_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_4_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_4_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-TP-4"
+            case_key = "BG_TP_4"
         elif filename in [os.path.basename(settings.BG_TP_5_TEMPLATE), os.path.basename(settings.BG_TP_5_TEMPLATE), os.path.basename(settings.BG_TP_5_TEMPLATE), os.path.basename(settings.BG_TP_5_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_5_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_5_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-TP-5"
-        elif filename in [os.path.basename(settings.BG_TP_5_TEMPLATE), os.path.basename(settings.BG_TP_6_TEMPLATE), os.path.basename(settings.BG_TP_6_TEMPLATE), os.path.basename(settings.BG_TP_6_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_6_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_6_TEMPLATE_NOT_EMPTY)]:
-            case_key = "BG-TP-6"
+            case_key = "BG_TP_5"
+        elif filename in [os.path.basename(settings.BG_TP_6_TEMPLATE), os.path.basename(settings.BG_TP_6_TEMPLATE), os.path.basename(settings.BG_TP_6_TEMPLATE), os.path.basename(settings.BG_TP_6_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_6_TEMPLATE_NOT_EMPTY), os.path.basename(settings.BG_TP_6_TEMPLATE_NOT_EMPTY)]:
+            case_key = "BG_TP_6"
         
         else:
             raise HTTPException(status_code=400, detail="Unknown Excel template")
@@ -340,6 +340,18 @@ def process_excel_file(file_path: str, output_dir: str) -> list:
             if not student_data["Nom"] or not student_data["CodeApprenant"]:
                 logger.info(f"Skipping empty bulletin for row {index} with data: {student_data}")
                 continue
+
+            # Ajout de la vérification d'index pour grade_column_indices
+            grade_column_indices = case_config["grade_column_indices"]
+            for i in range(1, len(grade_column_indices) + 1):
+                if (i-1) < len(grade_column_indices):
+                    grade_str = str(student_data.iloc[grade_column_indices[i-1]]).strip() if pd.notna(student_data.iloc[grade_column_indices[i-1]]) else ""
+                else:
+                    logging.warning(f"Invalid index access: {i-1} in grade_column_indices")
+                    continue  # Passer à l'itération suivante
+
+            logging.debug(f"grade_column_indices: {grade_column_indices}")
+            logging.debug(f"Index in student_data: {student_data.index}")
 
             # Générer le document Word pour l'étudiant
             bulletin_path = generate_word_document(student_data, case_config, case_config["template_word"], output_dir)

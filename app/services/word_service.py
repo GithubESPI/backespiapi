@@ -92,6 +92,7 @@ def generate_placeholders(titles_row, case_config, student_data, current_date, e
         "nomApprenant": student_data["Nom"],
         "etendugroupe": student_data["Étendu Groupe"],
         "dateNaissance": student_data["Date de Naissance"],
+        "codegroupe": student_data["Code Groupe"],
         "groupe": student_data["Nom Groupe"],
         "campus": student_data["Nom Site"],
         "justifiee": student_data["ABS justifiées"],
@@ -102,7 +103,7 @@ def generate_placeholders(titles_row, case_config, student_data, current_date, e
         "CodeApprenant": student_data["CodeApprenant"]
     }
 
-    # Mise à jour des placeholders en fonction de la clé du cas
+    # Mise à jour des placeholders en fonction de la clé du cas M1, M2
     if case_config["key"] == "M1_S1":
         placeholders.update({
             "UE1_Title": titles_row[0],
@@ -229,6 +230,230 @@ def generate_placeholders(titles_row, case_config, student_data, current_date, e
             "matiere11": titles_row[14],
         })
 
+    # Mise à jour des placeholders en fonction de la clé du cas BG ALT 1 2 3 4 5 6
+    elif case_config["key"] == "BG_ALT_1": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "UE2_Title": titles_row[4],
+            "matiere4": titles_row[5],
+            "matiere5": titles_row[6],
+            "UE3_Title": titles_row[7],
+            "matiere6": titles_row[8],
+            "UE4_Title": titles_row[9],
+            "matiere7": titles_row[10],
+            "matiere8": titles_row[11],
+            "matiere9": titles_row[12],
+            "matiere10": titles_row[13],
+            "matiere11": titles_row[14],
+            "matiere12": titles_row[15],
+            "matiere13": titles_row[16],
+            "matiere14": titles_row[17],
+        })
+    elif case_config["key"] == "BG_ALT_2": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "matiere4": titles_row[4],
+            "UE2_Title": titles_row[5],
+            "matiere5": titles_row[6],
+            "matiere6": titles_row[7],
+            "matiere7": titles_row[8],
+            "UE3_Title": titles_row[9],
+            "matiere8": titles_row[10],
+            "UE4_Title": titles_row[11],
+            "matiere9": titles_row[12],
+            "matiere10": titles_row[13],
+            "matiere11": titles_row[14],
+            "matiere12": titles_row[15],
+            "matiere13": titles_row[16],
+            "matiere14": titles_row[17],
+            "matiere15": titles_row[18],
+        })
+    elif case_config["key"] == "BG_ALT_3": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "matiere4": titles_row[4],
+            "matiere5": titles_row[5],
+            "UE2_Title": titles_row[6],
+            "matiere6": titles_row[7],
+            "matiere7": titles_row[8],
+            "UE3_Title": titles_row[9],
+            "matiere8": titles_row[10],
+            "UE4_Title": titles_row[11],
+            "matiere9": titles_row[12],
+            "matiere10": titles_row[13],
+            "matiere11": titles_row[14],
+            "matiere12": titles_row[15],
+            "matiere13": titles_row[16],
+        })
+    elif case_config["key"] == "BG_ALT_4": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "UE2_Title": titles_row[4],
+            "matiere4": titles_row[5],
+            "matiere5": titles_row[6],
+            "matiere6": titles_row[7],
+            "matiere7": titles_row[8],
+            "UE3_Title": titles_row[9],
+            "matiere8": titles_row[10],
+            "UE4_Title": titles_row[11],
+            "matiere9": titles_row[12],
+            "matiere10": titles_row[13],
+            "matiere11": titles_row[14],
+            "matiere12": titles_row[15],
+            "matiere13": titles_row[16],
+        })
+    elif case_config["key"] == "BG_ALT_5": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "UE2_Title": titles_row[4],
+            "matiere4": titles_row[5],
+            "matiere5": titles_row[6],
+            "matiere6": titles_row[7],
+            "UE3_Title": titles_row[8],
+            "matiere7": titles_row[9],
+            "UE4_Title": titles_row[10],
+            "matiere8": titles_row[11],
+            "matiere9": titles_row[12],
+            "matiere10": titles_row[13],
+            "matiere11": titles_row[14],
+            "matiere12": titles_row[15],
+            "matiere13": titles_row[16],
+            "matiere14": titles_row[17],
+        })
+    elif case_config["key"] == "BG_ALT_6": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "UE2_Title": titles_row[3],
+            "matiere3": titles_row[4],
+            "matiere4": titles_row[5],
+            "UE3_Title": titles_row[6],
+            "matiere5": titles_row[7],
+            "matiere6": titles_row[8],
+            "UE4_Title": titles_row[9],
+            "matiere7": titles_row[10],
+            "matiere8": titles_row[11],
+            "matiere9": titles_row[12],
+            "matiere10": titles_row[13],
+            "matiere11": titles_row[14],
+            "matiere12": titles_row[15],
+        })
+    
+    # Mise à jour des placeholders en fonction de la clé du cas BG TP 1 2 3 4 5 6
+    elif case_config["key"] == "BG_TP_1": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "matiere4": titles_row[5],
+            "matiere5": titles_row[6],
+            "matiere6": titles_row[8],
+            "matiere7": titles_row[7],
+            "UE2_Title": titles_row[8],
+            "matiere8": titles_row[9],
+            "matiere9": titles_row[10],
+            "matiere10": titles_row[11],
+            "matiere11": titles_row[12],
+            "matiere12": titles_row[13],
+            "UE3_Title": titles_row[14],
+            "matiere13": titles_row[15],
+            "matiere14": titles_row[16],
+            "UE4_Title": titles_row[17],
+            "matiere15": titles_row[18],
+            "matiere16": titles_row[19],
+            "matiere17": titles_row[20],
+            "matiere18": titles_row[21],
+            "matiere19": titles_row[22],
+            "matiere20": titles_row[23],
+            "matiere21": titles_row[24],
+            "matiere22": titles_row[25],
+            
+        })
+    elif case_config["key"] == "BG_TP_2": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+        })
+    elif case_config["key"] == "BG_TP_3": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "matiere4": titles_row[4],
+            "UE2_Title": titles_row[5],
+            "matiere5": titles_row[6],
+            "matiere6": titles_row[7],
+            "matiere7": titles_row[8],
+            "matiere8": titles_row[9],
+            "matiere9": titles_row[10],
+            "UE3_Title": titles_row[11],
+            "matiere10": titles_row[12],
+            "matiere11": titles_row[13],
+            "UE4_Title": titles_row[14],
+            "matiere12": titles_row[15],
+            "matiere13": titles_row[16],
+            "matiere14": titles_row[17],
+            "matiere15": titles_row[18],
+        })
+    elif case_config["key"] == "BG_TP_4": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+        })
+    elif case_config["key"] == "BG_TP_5": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+            "matiere4": titles_row[4],
+            "matiere5": titles_row[5],
+            "UE2_Title": titles_row[6],
+            "matiere6": titles_row[7],
+            "matiere7": titles_row[8],
+            "matiere8": titles_row[9],
+            "matiere9": titles_row[10],
+            "matiere10": titles_row[11],
+            "UE3_Title": titles_row[12],
+            "matiere11": titles_row[13],
+            "matiere12": titles_row[14],
+            "matiere13": titles_row[15],
+            "UE4_Title": titles_row[16],
+            "matiere14": titles_row[17],
+            "matiere15": titles_row[18],
+            "matiere16": titles_row[19],
+            "matiere17": titles_row[20],
+            "matiere18": titles_row[21],
+            "matiere19": titles_row[22],
+        })
+    elif case_config["key"] == "BG_TP_6": 
+        placeholders.update({
+            "UE1_Title": titles_row[0],
+            "matiere1": titles_row[1],
+            "matiere2": titles_row[2],
+            "matiere3": titles_row[3],
+        })
+    
+    
     # Ajouter les valeurs ECTS aux placeholders, en masquant celles spécifiées
     for i in range(1, 17):
         if i not in case_config["hidden_ects"]:
@@ -365,6 +590,149 @@ def process_ue4(placeholders, note_indices, grade_column_indices, student_data, 
 
     return placeholders
 
+def process_and_evaluate_ue(placeholders, ue_name, note_indices, grade_column_indices, student_data, case_config):
+    ue_notes = []
+    ue_ects = []
+    valid_indices = []
+    
+    for i in note_indices:
+        grade_str = str(student_data.iloc[grade_column_indices[i-1]]).strip() if pd.notna(student_data.iloc[grade_column_indices[i-1]]) else ""
+        ects_value = placeholders.get(f"ECTS{i}", "")
+        placeholders[f"etat{i}"] = ""
+        placeholders[f"note{i}"] = ""
+        
+        if grade_str and grade_str != 'Note' and ects_value and i not in case_config["hidden_ects"]:
+            grades_coefficients, special_case = extract_grades_and_coefficients(grade_str)
+            if special_case:
+                placeholders[f"note{i}"] = special_case
+                placeholders[f"ECTS{i}"] = ""  # Ne pas attribuer d'ECTS pour les cas spéciaux
+            elif grades_coefficients:
+                individual_average = calculate_weighted_average([g[0] for g in grades_coefficients], [g[1] for g in grades_coefficients])
+                if individual_average is not None:
+                    ue_notes.append(individual_average)
+                    ue_ects.append(float(ects_value))
+                    placeholders[f"note{i}"] = f"{individual_average:.2f}"
+                    valid_indices.append(i)
+                    logging.debug(f"Note valide pour l'index {i}: {individual_average:.2f}")
+                else:
+                    logging.debug(f"Aucune note ou coefficient valide pour l'index {i}")
+    
+    # Calculer la moyenne de l'UE
+    if ue_notes and ue_ects:
+        ue_average = calculate_weighted_average(ue_notes, ue_ects)
+        placeholders[f"moy{ue_name}"] = f"{ue_average:.2f}"
+        logging.debug(f"UE average: {ue_average:.2f}")
+    else:
+        placeholders[f"moy{ue_name}"] = ""
+        logging.debug("Aucune note valide pour le calcul de la moyenne UE")
+    
+    # Déterminer l'état de l'UE
+    if ue_notes:
+        notes_below_8 = sum(1 for note in ue_notes if note < 8)
+        notes_between_8_and_10 = sum(1 for note in ue_notes if 8 <= note < 10)
+        
+        if all(note >= 10 for note in ue_notes):
+            placeholders[f"etat{ue_name}"] = "VA"
+            logging.debug("État de l'UE : VA (toutes les notes >= 10)")
+        elif notes_below_8 == 0 and notes_between_8_and_10 <= 1:
+            placeholders[f"etat{ue_name}"] = "VA"
+            logging.debug("État de l'UE : VA (au plus une note entre 8 et 10, aucune en dessous de 8)")
+        else:
+            placeholders[f"etat{ue_name}"] = "NV"
+            logging.debug("État de l'UE : NV")
+        
+        # Attribuer des états individuels et ajuster ECTS pour l'affichage
+        for i, note in zip(valid_indices, ue_notes):
+            if note < 8:
+                placeholders[f"etat{i}"] = "R"
+                placeholders[f"ECTS{i}"] = 0
+                logging.debug(f"Rattrapage pour l'index {i}: note={note:.2f}, ECTS défini sur 0 pour l'affichage")
+            elif 8 <= note < 10:
+                if notes_below_8 > 0 or notes_between_8_and_10 > 1:
+                    placeholders[f"etat{i}"] = "R"
+                    placeholders[f"ECTS{i}"] = 0
+                else:
+                    placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders[f"etat{i}"] = ""
+    else:
+        placeholders[f"etat{ue_name}"] = ""
+        for i in note_indices:
+            placeholders[f"etat{i}"] = ""
+    
+    return placeholders
+
+def process_UE4_and_evaluate_ue(placeholders, ue_name, note_indices, grade_column_indices, student_data, case_config):
+    ue_notes = []
+    ue_ects = []
+    
+    logging.debug(f"note_indices for UE4: {note_indices}")
+    logging.debug(f"Length of grade_column_indices: {len(grade_column_indices)}")
+    logging.debug(f"grade_column_indices: {grade_column_indices}")
+    
+    valid_note_indices = [i for i in note_indices if i-1 < len(grade_column_indices)]
+    
+    for i in valid_note_indices:
+        if i-1 < len(grade_column_indices):
+            grade_str = str(student_data.iloc[grade_column_indices[i-1]]).strip() if pd.notna(student_data.iloc[grade_column_indices[i-1]]) else ""
+            ects_value = placeholders.get(f"ECTS{i}", "")
+            
+            placeholders[f"note{i}"] = ""
+            placeholders[f"etat{i}"] = ""
+            
+            if grade_str and grade_str != 'Note' and ects_value and i not in case_config["hidden_ects"]:
+                grades_coefficients, special_case = extract_grades_and_coefficients(grade_str)
+                if special_case:
+                    placeholders[f"note{i}"] = special_case
+                    placeholders[f"ECTS{i}"] = ""  # Ne pas attribuer d'ECTS pour les cas spéciaux
+                elif grades_coefficients:
+                    individual_average = calculate_weighted_average([g[0] for g in grades_coefficients], [g[1] for g in grades_coefficients])
+                    if individual_average is not None:
+                        ue_notes.append(individual_average)
+                        placeholders[f"note{i}"] = f"{individual_average:.2f}"
+                        if individual_average < 8:
+                            placeholders[f"etat{i}"] = "R"
+                            placeholders[f"ECTS{i}"] = 0  # Set ECTS to 0 when state is "R"
+                        elif 8 <= individual_average < 10:
+                            placeholders[f"etat{i}"] = "C"
+                            ue_ects.append(float(ects_value))
+                        else:
+                            ue_ects.append(float(ects_value))
+                else:
+                    logging.debug(f"No valid grades or coefficients for index {i}")
+        else:
+            logging.warning(f"Index {i-1} is out of range for grade_column_indices. Skipping this index.")
+    
+    # If no valid notes, consider UE as not validated
+    if ue_notes and ue_ects:
+        ue_average = calculate_weighted_average(ue_notes, ue_ects)
+        if ue_average is not None:
+            placeholders[f"moy{ue_name}"] = f"{ue_average:.2f}"
+            placeholders[f"etat{ue_name}"] = "VA" if ue_average >= 10 else "NV"
+        else:
+            placeholders[f"moy{ue_name}"] = ""
+            placeholders[f"etat{ue_name}"] = "NV"
+    else:
+        placeholders[f"moy{ue_name}"] = ""
+        placeholders[f"etat{ue_name}"] = "NV"
+    
+    # Final check to ensure no state is assigned to empty notes
+    for i in note_indices:
+        if f"note{i}" not in placeholders:
+            placeholders[f"note{i}"] = ""
+        if f"etat{i}" not in placeholders:
+            placeholders[f"etat{i}"] = ""
+        if f"ECTS{i}" not in placeholders:
+            placeholders[f"ECTS{i}"] = ""
+        
+        if not placeholders[f"note{i}"]:
+            placeholders[f"etat{i}"] = ""
+            placeholders[f"ECTS{i}"] = ""  # Ensure ECTS is empty for empty notes
+        elif placeholders[f"etat{i}"] == "R":
+            placeholders[f"ECTS{i}"] = 0  # Set ECTS to 0 when state is "R"
+    
+    return placeholders
+
 def set_hidden_text(paragraph):
     """Set all runs in the paragraph as hidden."""
     for run in paragraph.runs:
@@ -483,8 +851,635 @@ def generate_word_document(student_data, case_config, template_path, output_dir)
             placeholders["etatUE1"] = ""
             for i in range(1, 4):
                 placeholders[f"etat{i}"] = ""
+    elif case_config["key"] == "M2_S3_MAGI":
+        process_ue_notes(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE2", [4], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE3", [5, 6, 7, 8, 9], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UESPE", [10, 11, 12, 13], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    elif case_config["key"] == "M2_S3_MEFIM":
+        process_ue_notes(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE2", [4], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE3", [5, 6, 7, 8, 9], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UESPE", [10, 11, 12, 13], case_config["grade_column_indices"], student_data, case_config)
+        
+        # Gestion des notes et des états pour UE1 (similaire à M2_S3_MAGI)
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    elif case_config["key"] == "M2_S3_MAPI":
+        process_ue_notes(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE2", [4], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE3", [5, 6, 7, 8, 9], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UESPE", [10, 11, 12, 13, 14], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1 (similaire à M2_S3_MAGI)
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    elif case_config["key"] == "M2_S4":
+        process_ue_notes(placeholders, "UE1", [1], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE2", [2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UE3", [4, 5, 6, 7, 8], case_config["grade_column_indices"], student_data, case_config)
+        process_ue_notes(placeholders, "UESPE", [9, 10, 11], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1 (cas M2_S4 avec un seul indice pour UE1)
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 2)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 2):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 2):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_ALT_1
+    elif case_config["key"] == "BG_ALT_1":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [4, 5], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [6], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [7, 8, 9, 10, 11, 12, 13, 14], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_ALT_2
+    elif case_config["key"] == "BG_ALT_2":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3, 4], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [5, 6, 7], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [8], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [9, 10, 11, 12, 13, 14, 15], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 5)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 5):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 5):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_ALT_3
+    elif case_config["key"] == "BG_ALT_3":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3, 4, 5], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [6, 7, 8], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [9], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [10, 11, 12, 13], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 6)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 6):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 6):
+                placeholders[f"etat{i}"] = ""
+        # Cas BG_ALT_4
+    elif case_config["key"] == "BG_ALT_4":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [4, 5, 6], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [7, 8, 9, 10, 11, 12], case_config["grade_column_indices"], student_data, case_config)
 
 
+        # Gestion des notes et des états pour UE1 (similaire à BG_ALT_1)
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_ALT_5
+    elif case_config["key"] == "BG_ALT_5":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [4, 5, 6], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [7, 8], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [9, 10, 11, 12, 13, 14], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1 (similaire à BG_ALT_1)
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_ALT_6
+    elif case_config["key"] == "BG_ALT_6":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [4, 5], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [6], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [7, 8, 9, 10, 11, 12], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1 (similaire à BG_ALT_1)
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_TP_1
+    elif case_config["key"] == "BG_TP_1":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3, 4, 5, 6, 7], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [8, 9, 10, 11, 12], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [13, 14], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [15, 16, 17, 18, 19, 20, 21, 22], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 8)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 8):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 8):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_TP_2
+    elif case_config["key"] == "BG_TP_2":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_TP_3
+    elif case_config["key"] == "BG_TP_3":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3, 4, 5], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [6, 7, 8, 9, 10], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [11, 12, 13], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [14, 15], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 6)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 6):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 6):
+                placeholders[f"etat{i}"] = ""       
+    
+    # Cas BG_TP_4
+    elif case_config["key"] == "BG_TP_4":
+        process_and_evaluate_ue(placeholders, "UE1", [1], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 2)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 2):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 2):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_TP_5
+    elif case_config["key"] == "BG_TP_5":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3, 4, 5], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE2", [6, 7, 8, 9, 10], case_config["grade_column_indices"], student_data, case_config)
+        process_and_evaluate_ue(placeholders, "UE3", [11, 12, 13], case_config["grade_column_indices"], student_data, case_config)
+        process_UE4_and_evaluate_ue(placeholders, "UE4", [14, 15, 16, 17, 18, 19], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 6)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 6):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 6):
+                placeholders[f"etat{i}"] = ""
+    # Cas BG_TP_6
+    elif case_config["key"] == "BG_TP_6":
+        process_and_evaluate_ue(placeholders, "UE1", [1, 2, 3], case_config["grade_column_indices"], student_data, case_config)
+
+        # Gestion des notes et des états pour UE1
+        ue1_notes = [float(placeholders[f"note{i}"]) if placeholders[f"note{i}"] and placeholders[f"note{i}"] != "" and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "" else None for i in range(1, 4)]
+        placeholders["etatUE1"] = ""
+        for i in range(1, 4):
+            placeholders[f"etat{i}"] = ""
+
+        if any(note is not None for note in ue1_notes):
+            notes_between_8_and_10 = sum(8 <= note < 10 for note in ue1_notes if note is not None)
+            notes_below_8 = sum(note < 8 for note in ue1_notes if note is not None)
+
+            if all(note >= 10 for note in ue1_notes if note is not None):
+                placeholders["etatUE1"] = "VA"
+            elif notes_between_8_and_10 == 1 and notes_below_8 == 0:
+                placeholders["etatUE1"] = "VA"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and 8 <= note < 10 and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        placeholders[f"etat{i}"] = "C"
+            else:
+                placeholders["etatUE1"] = "NV"
+                for i, note in enumerate(ue1_notes, start=1):
+                    if note is not None and i not in case_config["hidden_ects"] and placeholders.get(f"ECTS{i}", "") != "":
+                        if note < 8:
+                            placeholders[f"etat{i}"] = "R"
+                        elif 8 <= note < 10:
+                            placeholders[f"etat{i}"] = "R" if notes_below_8 > 0 or notes_between_8_and_10 > 1 else "C"
+                        else:
+                            placeholders[f"etat{i}"] = ""
+                    else:
+                        placeholders[f"etat{i}"] = ""
+        else:
+            placeholders["etatUE1"] = ""
+            for i in range(1, 4):
+                placeholders[f"etat{i}"] = ""
+    
     total_ects = 0  # Initialiser le total des ECTS
 
     # Dans la fonction generate_word_document, modifiez la partie qui traite les notes
@@ -496,6 +1491,7 @@ def generate_word_document(student_data, case_config, template_path, output_dir)
                 placeholders[f"note{i}"] = special_case
                 placeholders[f"ECTS{i}"] = ""  # Ne pas attribuer d'ECTS pour les cas spéciaux
             else:
+                logger.warning(f"Invalid column index: {col_index} for student {student_data['Nom']}")
                 individual_average = calculate_weighted_average([g[0] for g in grades_coefficients], [g[1] for g in grades_coefficients])
                 placeholders[f"note{i}"] = f"{individual_average:.2f}" if individual_average else ""
                 if individual_average > 8 and i not in case_config["hidden_ects"]:

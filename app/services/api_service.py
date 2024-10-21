@@ -28,7 +28,6 @@ def save_generated_excel_url_to_db(user_id, excel_url):
         logger.error(f"Failed to save Excel URL: {str(e)}")
         raise Exception(f"Failed to save Excel URL: {str(e)}")
 
-# Asynchronous function to fetch data from an API
 async def fetch_api_data(url: str, headers: dict):
     logger.debug(f"Fetching data from {url} with headers {headers}")
     
@@ -42,15 +41,12 @@ async def fetch_api_data(url: str, headers: dict):
         except httpx.HTTPStatusError as exc:
             logger.error(f"Error response {exc.response.status_code} while requesting {exc.request.url!r}: {exc.response.text}")
             raise HTTPException(status_code=exc.response.status_code, detail=f"API call failed with status {exc.response.status_code}")
-
+    
         try:
             data = response.json()
+            logger.debug(f"Fetched data type: {type(data)}")
             logger.debug(f"Fetched data: {data}")
-            if isinstance(data, (list, dict)):
-                return data
-            else:
-                logger.error("Data is not a list or dict")
-                raise HTTPException(status_code=500, detail="Invalid data format")
+            return data
         except ValueError as e:
             logger.error(f"Error parsing JSON: {str(e)}")
             raise HTTPException(status_code=500, detail="Error parsing JSON")
