@@ -23,6 +23,7 @@ from app.services.api_service import fetch_api_data
 from app.services.excel_service import process_excel_file, update_excel_with_appreciations
 from app.utils.date_utils import sum_durations
 from starlette.websockets import WebSocketDisconnect
+from datetime import datetime
 
 
 
@@ -58,6 +59,7 @@ def normalize_title(title):
     if not isinstance(title, str):
         title = str(title)
     return re.sub(r'\W+', '', title).lower()
+
 
 class_ids = {
     "MAPI": "ID_MAPI_001",
@@ -193,13 +195,17 @@ async def fetch_api_data_for_template(headers, class_name=None):
         api_urls = [
             urls["apprenants_url"],
             urls["groupes_url"],
-            f"https://groupe-espi.ymag.cloud/index.php/r/v1/absences/01-09-2023/15-09-2024"
+            f"https://groupe-espi.ymag.cloud/index.php/r/v1/absences/01-09-2023/15-09-2024",
+            f"https://groupe-espi.ymag.cloud/index.php/r/v1/apprenants/frequentes?codesPeriode=2",
+            f"https://groupe-espi.ymag.cloud/index.php/r/v1/periodes"
         ]
     else:
         api_urls = [
             f"https://groupe-espi.ymag.cloud/index.php/r/v1/formation-longue/apprenants?codesPeriode=2",
-            f"https://groupe-espi.ymag.cloud/index.php/r/v1/formation-longue/groupes",
-            f"https://groupe-espi.ymag.cloud/index.php/r/v1/absences/01-09-2023/15-09-2024"
+            f"https://groupe-espi.ymag.cloud/index.php/r/v1/formation-longue/groupes?codesPeriode=2",
+            f"https://groupe-espi.ymag.cloud/index.php/r/v1/absences/01-09-2023/15-09-2024",
+            f"https://groupe-espi.ymag.cloud/index.php/r/v1/apprenants/frequentes?codesPeriode=2",
+            f"https://groupe-espi.ymag.cloud/index.php/r/v1/periodes"
         ]
 
     api_data_futures = [fetch_api_data(url, headers) for url in api_urls]
@@ -216,7 +222,99 @@ async def fetch_api_data_for_template(headers, class_name=None):
     if any(isinstance(result, Exception) for result in results):
         raise HTTPException(status_code=500, detail="Failed to fetch API data")
 
-    return results
+    api_data, raw_groupes_data, absences_data, frequentes_data, periodes_dict = results
+    
+    # Construction du dictionnaire des groupes
+    groupes_dict = {}
+    for groupe in raw_groupes_data.values():
+        if isinstance(groupe, dict) and 'codeGroupe' in groupe:
+            groupe_code = str(groupe['codeGroupe'])  # Convertir en string pour la cohérence
+            groupes_dict[groupe_code] = {
+                'codeGroupe': groupe_code,
+                'nomGroupe': groupe.get('nomGroupe', 'N/A'),
+                'etenduGroupe': groupe.get('etenduGroupe', 'N/A')
+            }
+    
+    logger.debug(f"Groupes data structure: {groupes_dict}")
+
+    # Traitement des périodes
+    periode_2023_2024 = next(
+        (periode for periode in periodes_dict.values() 
+        if periode.get('codePeriode') == 2), None
+    )
+
+    # Traitement des fréquentations avec vérification des dates
+    # Traitement des fréquentations avec vérification des dates
+    frequentes_dict = {}
+    for frequentation in frequentes_data.values():
+        code_apprenant = str(frequentation.get('codeApprenant'))  # Convertir en string
+        date_debut_frequentation = frequentation.get('dateDeb')
+        date_fin_frequentation = frequentation.get('dateFin')
+        
+        # Vérifier que toutes les données nécessaires sont présentes
+        if not all([code_apprenant, date_debut_frequentation, date_fin_frequentation]):
+            logger.warning(f"Missing required data for frequentation: code_apprenant={code_apprenant}, "f"date_debut={date_debut_frequentation}, date_fin={date_fin_frequentation}")
+            continue
+
+        if periode_2023_2024:
+            try:
+                # Vérifier que les dates sont bien au format attendu
+                if not isinstance(date_debut_frequentation, str) or not isinstance(date_fin_frequentation, str):
+                    logger.warning(f"Invalid date format for frequentation: date_debut={date_debut_frequentation}, "f"date_fin={date_fin_frequentation}")
+                    continue
+
+                # S'assurer que periode_2023_2024 contient les bonnes données
+                periode_debut_str = periode_2023_2024.get('dateDeb')
+                periode_fin_str = periode_2023_2024.get('dateFin')
+                
+                if not periode_debut_str or not periode_fin_str:
+                    logger.warning("Missing period dates in periode_2023_2024")
+                    continue
+
+                # Parser les dates
+                date_debut = datetime.strptime(date_debut_frequentation, '%d/%m/%Y')
+                date_fin = datetime.strptime(date_fin_frequentation, '%d/%m/%Y')
+                periode_debut = datetime.strptime(periode_debut_str, '%d/%m/%Y')
+                periode_fin = datetime.strptime(periode_fin_str, '%d/%m/%Y')
+
+                if date_debut <= periode_fin and date_fin >= periode_debut:
+                    # Si l'apprenant a déjà une fréquentation, comparer les dates
+                    if code_apprenant in frequentes_dict:
+                        existing_date_debut_str = frequentes_dict[code_apprenant].get('dateDeb')
+                        if existing_date_debut_str:
+                            existing_date_debut = datetime.strptime(existing_date_debut_str, '%d/%m/%Y')
+                            if date_debut > existing_date_debut:
+                                frequentes_dict[code_apprenant] = frequentation
+                    else:
+                        frequentes_dict[code_apprenant] = frequentation
+
+                    logger.debug(f"Added/Updated frequentation for apprenant {code_apprenant} "f"with groupe {frequentation.get('codeGroupe')}")
+
+            except ValueError as e:
+                logger.error(f"Error processing dates for apprenant {code_apprenant}: {str(e)}")
+                continue
+            except Exception as e:
+                logger.error(f"Unexpected error processing frequentation for apprenant {code_apprenant}: {str(e)}")
+                continue
+
+    # Mise à jour des informations de groupe dans api_data
+    for apprenant in api_data.values():
+        code_apprenant = str(apprenant.get('codeApprenant'))
+        if code_apprenant in frequentes_dict:
+            frequentes_info = frequentes_dict[code_apprenant]
+            code_groupe = str(frequentes_info.get('codeGroupe'))
+            
+            if code_groupe and code_groupe in groupes_dict:
+                if not apprenant.get('informationsCourantes'):
+                    apprenant['informationsCourantes'] = {}
+                apprenant['informationsCourantes'].update({
+                    'codeGroupe': code_groupe,
+                    'nomGroupe': groupes_dict[code_groupe].get('nomGroupe'),
+                    'etenduGroupe': groupes_dict[code_groupe].get('etenduGroupe')
+                })
+
+    return api_data, groupes_dict, absences_data, frequentes_dict, periodes_dict
+
 # Function to extract appreciations from Word document
 def extract_appreciations_from_word(word_path):
     try:
@@ -241,139 +339,6 @@ def log_excel_data(worksheet):
     for row in worksheet.iter_rows(values_only=True):
         data.append(row)
     logger.debug(f"Excel data: {data}")
-
-# Process the uploaded file and integrate data into the Excel template
-async def process_file(uploaded_wb, template_path, columns_config, class_name, websocket=None):
-    try:
-        logger.debug(f"Trying to load Excel file from: {template_path}")
-        template_wb = openpyxl.load_workbook(template_path, data_only=True)
-        uploaded_ws = uploaded_wb.active
-        template_ws = template_wb.active
-
-        header_row_uploaded = 4
-        header_row_template = 1
-
-        uploaded_titles = {normalize_title(uploaded_ws.cell(row=header_row_uploaded, column=col).value): col
-                           for col in range(1, uploaded_ws.max_column + 1) 
-                           if uploaded_ws.cell(row=header_row_uploaded, column=col).value is not None}
-
-        template_titles = {normalize_title(template_ws.cell(row=header_row_template, column=col).value): col 
-                           for col in range(1, template_ws.max_column + 1) 
-                           if template_ws.cell(row=header_row_template, column=col).value is not None}
-
-        matching_columns = {uploaded_title: (uploaded_titles[uploaded_title], template_titles[template_title]) 
-                            for uploaded_title in uploaded_titles 
-                            for template_title in template_titles 
-                            if uploaded_title == template_title}
-
-        if not matching_columns:
-            return JSONResponse(content={"message": "No matching columns found, leaving new table empty."})
-
-        template_ws.cell(row=header_row_template + 1, column=columns_config['name_column_index_template']).value = "Nom"
-
-        headers = {
-            'X-Auth-Token': settings.YPAERO_API_TOKEN,
-            'Content-Type': 'application/json'
-        }
-
-        api_data, groupes_data, absences_data = await fetch_api_data_for_template(headers, class_name)
-
-        if not isinstance(api_data, dict) or not isinstance(groupes_data, dict) or not isinstance(absences_data, dict):
-            raise HTTPException(status_code=500, detail="Unexpected API response format")
-
-        api_dict = {normalize_title(apprenant['nomApprenant'] + apprenant['prenomApprenant']): apprenant for key, apprenant in api_data.items()}
-        groupes_dict = {groupe['codeGroupe']: groupe for groupe in groupes_data.values()}
-        absences_summary = {}
-        for absence in absences_data.values():
-            apprenant_id = absence.get('codeApprenant')
-            duration = int(absence.get('duree', 0))
-
-            if apprenant_id not in absences_summary:
-                absences_summary[apprenant_id] = {'justified': [], 'unjustified': [], 'delays': []}
-
-            if absence.get('isJustifie'):
-                absences_summary[apprenant_id]['justified'].append(duration)
-            elif absence.get('isRetard'):
-                absences_summary[apprenant_id]['delays'].append(duration)
-            else:
-                absences_summary[apprenant_id]['unjustified'].append(duration)
-
-        exclude_phrase = 'moyennedugroupe'
-        total_rows = uploaded_ws.max_row - header_row_uploaded
-        processed_rows = 0
-
-        for row in range(header_row_uploaded + 1, uploaded_ws.max_row + 1):
-            processed_rows += 1
-            progress = (processed_rows / total_rows) * 100
-
-            if websocket:
-                try:
-                    await websocket.send(json.dumps({
-                        "progress": progress,
-                        "message": f"Processing row {processed_rows} of {total_rows}"
-                    }))
-                except WebSocketDisconnect:
-                    pass
-
-            if any(exclude_phrase in normalize_title(uploaded_ws.cell(row=row, column=col).value or '') for col in range(1, uploaded_ws.max_column + 1)):
-                continue
-
-            uploaded_name = uploaded_ws.cell(row=row, column=columns_config['name_column_index_uploaded']).value
-            template_row = row - header_row_uploaded + header_row_template + 1
-            template_ws.cell(row=template_row, column=columns_config['name_column_index_template']).value = uploaded_name
-
-            normalized_name = normalize_title(uploaded_name)
-
-            if (apprenant_info := api_dict.get(normalized_name)):
-                template_ws.cell(row=template_row, column=columns_config['code_apprenant_column_index_template']).value = apprenant_info.get('codeApprenant', 'N/A')
-                template_ws.cell(row=template_row, column=columns_config['date_naissance_column_index_template']).value = apprenant_info.get('dateNaissance', 'N/A')
-
-                if 'inscriptions' in apprenant_info and apprenant_info['inscriptions']:
-                    template_ws.cell(row=template_row, column=columns_config['nom_site_column_index_template']).value = apprenant_info['inscriptions'][0]['site'].get('nomSite', 'N/A')
-
-                code_groupe = apprenant_info.get('informationsCourantes', {}).get('codeGroupe', None)
-                if code_groupe and code_groupe in groupes_dict:
-                    groupe_info = groupes_dict[code_groupe]
-                    template_ws.cell(row=template_row, column=columns_config['code_groupe_column_index_template']).value = groupe_info.get('codeGroupe', 'N/A')
-                    template_ws.cell(row=template_row, column=columns_config['nom_groupe_column_index_template']).value = groupe_info.get('nomGroupe', 'N/A')
-                    template_ws.cell(row=template_row, column=columns_config['etendu_groupe_column_index_template']).value = groupe_info.get('etenduGroupe', 'N/A')
-
-                apprenant_id = apprenant_info.get('codeApprenant')
-                abs_info = absences_summary.get(apprenant_id, {'justified': [], 'unjustified': [], 'delays': []})
-
-                justified_duration = sum_durations(abs_info['justified']) or "00h00"
-                unjustified_duration = sum_durations(abs_info['unjustified']) or "00h00"
-                delays_duration = sum_durations(abs_info['delays']) or "00h00"
-
-                template_ws.cell(row=template_row, column=columns_config['duree_justifie_column_index_template']).value = justified_duration
-                template_ws.cell(row=template_row, column=columns_config['duree_non_justifie_column_index_template']).value = unjustified_duration
-                template_ws.cell(row=template_row, column=columns_config['duree_retard_column_index_template']).value = delays_duration
-
-            for uploaded_title, (src_col, dest_col) in matching_columns.items():
-                src_cell = uploaded_ws.cell(row=row, column=src_col)
-                dest_cell = template_ws.cell(row=template_row, column=dest_col)
-                dest_cell.value = src_cell.value
-
-        for col in range(1, template_ws.max_column + 1):
-            if template_ws.cell(row=header_row_template + 1, column=col).value == template_ws.cell(row=header_row_template, column=col).value:
-                template_ws.cell(row=header_row_template + 1, column=col).value = None
-
-        for col in range(1, template_ws.max_column + 1):
-            if template_ws.cell(row=header_row_template + 2, column=col).value == "Note":
-                template_ws.cell(row=header_row_template + 2, column=col).value = None
-
-        target_phrase = "* Attention, le total des absences prend en compte toutes les absences aux séances sur la période concernée. S'il existe des absences sur des matières qui ne figurent pas dans le relevé, elles seront également comptabilisées."
-        for row in template_ws.iter_rows():
-            for cell in row:
-                if cell.value == target_phrase:
-                    cell.value = None
-
-        log_excel_data(template_ws)
-        return template_wb
-
-    except Exception as e:
-        logger.error("Failed to process the file", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
 
 # Fonction pour extraire les appréciations depuis un document Word
 def extract_appreciations_from_word(word_path):
@@ -466,10 +431,9 @@ def import_document_to_yparéo(file_path, code_apprenant, retries=3, delay=5):
     logger.error(f"Failed to import document {file_path} after {retries} retries")
     raise ValueError(f"Server error while importing document {file_path} after {retries} retries")
 
-# Fonction pour traiter le fichier téléchargé et intégrer les données dans un template
-async def process_file(uploaded_wb, template_path, columns_config, class_name, websocket=None):
+# Process the uploaded file and integrate data into the Excel template
+async def process_file(uploaded_wb, template_path, columns_config, class_name, current_periode, previous_periode, api_data, frequentes_dict, websocket=None):
     try:
-        logger.debug(f"Trying to load Excel file from: {template_path}")
         template_wb = openpyxl.load_workbook(template_path, data_only=True)
         uploaded_ws = uploaded_wb.active
         template_ws = template_wb.active
@@ -477,58 +441,54 @@ async def process_file(uploaded_wb, template_path, columns_config, class_name, w
         header_row_uploaded = 4
         header_row_template = 1
 
-        # Extract uploaded and template titles, logging them for comparison
-        uploaded_titles = {normalize_title(uploaded_ws.cell(row=header_row_uploaded, column=col).value): col
-                           for col in range(1, uploaded_ws.max_column + 1) 
-                           if uploaded_ws.cell(row=header_row_uploaded, column=col).value is not None}
+        # Configuration des en-têtes et correspondances
+        uploaded_titles = {
+            normalize_title(uploaded_ws.cell(row=header_row_uploaded, column=col).value): col
+            for col in range(1, uploaded_ws.max_column + 1)
+            if uploaded_ws.cell(row=header_row_uploaded, column=col).value is not None
+        }
 
-        template_titles = {normalize_title(template_ws.cell(row=header_row_template, column=col).value): col 
-                           for col in range(1, template_ws.max_column + 1) 
-                           if template_ws.cell(row=header_row_template, column=col).value is not None}
+        template_titles = {
+            normalize_title(template_ws.cell(row=header_row_template, column=col).value): col
+            for col in range(1, template_ws.max_column + 1)
+            if template_ws.cell(row=header_row_template, column=col).value is not None
+        }
 
-        # Log all titles extracted from the uploaded file and the template
-        logger.debug(f"Uploaded titles: {uploaded_titles}")
-        logger.debug(f"Template titles: {template_titles}")
+        matching_columns = {
+            uploaded_title: (uploaded_titles[uploaded_title], template_titles[template_title])
+            for uploaded_title in uploaded_titles
+            for template_title in template_titles
+            if uploaded_title == template_title
+        }
 
-        # Matching logic with logging of unmatched titles
-        matching_columns = {uploaded_title: (uploaded_titles[uploaded_title], template_titles[template_title]) 
-                            for uploaded_title in uploaded_titles 
-                            for template_title in template_titles 
-                            if uploaded_title == template_title}
-
-        # Log unmatched titles
-        unmatched_uploaded_titles = [uploaded_title for uploaded_title in uploaded_titles if uploaded_title not in template_titles]
-        unmatched_template_titles = [template_title for template_title in template_titles if template_title not in uploaded_titles]
-        
-        if unmatched_uploaded_titles:
-            logger.warning(f"Unmatched uploaded titles: {unmatched_uploaded_titles}")
-        if unmatched_template_titles:
-            logger.warning(f"Unmatched template titles: {unmatched_template_titles}")
-
-        # If no matching columns are found, log an error
         if not matching_columns:
-            logger.error("No matching columns found, leaving the new table empty.")
-            return JSONResponse(content={"message": "No matching columns found, leaving the new table empty."})
+            return JSONResponse(content={"message": "No matching columns found."})
 
-        template_ws.cell(row=header_row_template + 1, column=columns_config['name_column_index_template']).value = "Nom"
-
+        # Obtention des données API
         headers = {
             'X-Auth-Token': settings.YPAERO_API_TOKEN,
             'Content-Type': 'application/json'
         }
 
-        api_data, groupes_data, absences_data = await fetch_api_data_for_template(headers, class_name)
+        api_data, groupes_dict, absences_data, frequentes_dict, periodes_dict = await fetch_api_data_for_template(headers, class_name)
 
-        if not isinstance(api_data, dict) or not isinstance(groupes_data, dict) or not isinstance(absences_data, dict):
+        if not isinstance(api_data, dict) or not isinstance(groupes_dict, dict) or not isinstance(absences_data, dict):
             raise HTTPException(status_code=500, detail="Unexpected API response format")
 
-        api_dict = {normalize_title(apprenant['nomApprenant'] + apprenant['prenomApprenant']): apprenant for key, apprenant in api_data.items()}
-        groupes_dict = {groupe['codeGroupe']: groupe for groupe in groupes_data.values()}
+        # Création du dictionnaire des apprenants
+        api_dict = {
+            normalize_title(apprenant['nomApprenant'] + apprenant['prenomApprenant']): apprenant 
+            for apprenant in api_data.values()
+        }
+
+        # Préparation du résumé des absences
         absences_summary = {}
         for absence in absences_data.values():
-            apprenant_id = absence.get('codeApprenant')
-            duration = int(absence.get('duree', 0))
+            apprenant_id = str(absence.get('codeApprenant'))
+            if not apprenant_id:
+                continue
 
+            duration = int(absence.get('duree', 0))
             if apprenant_id not in absences_summary:
                 absences_summary[apprenant_id] = {'justified': [], 'unjustified': [], 'delays': []}
 
@@ -539,6 +499,7 @@ async def process_file(uploaded_wb, template_path, columns_config, class_name, w
             else:
                 absences_summary[apprenant_id]['unjustified'].append(duration)
 
+        # Traitement des lignes
         exclude_phrase = 'moyennedugroupe'
         total_rows = uploaded_ws.max_row - header_row_uploaded
         processed_rows = 0
@@ -547,7 +508,6 @@ async def process_file(uploaded_wb, template_path, columns_config, class_name, w
             processed_rows += 1
             progress = (processed_rows / total_rows) * 100
 
-            # Envoyer la progression via WebSocket
             if websocket:
                 try:
                     await websocket.send(json.dumps({
@@ -555,68 +515,88 @@ async def process_file(uploaded_wb, template_path, columns_config, class_name, w
                         "message": f"Processing row {processed_rows} of {total_rows}"
                     }))
                 except WebSocketDisconnect:
-                    pass  # Le client a fermé la connexion
+                    pass
 
-            if any(exclude_phrase in normalize_title(uploaded_ws.cell(row=row, column=col).value or '') for col in range(1, uploaded_ws.max_column + 1)):
+            if any(exclude_phrase in normalize_title(uploaded_ws.cell(row=row, column=col).value or '')
+                for col in range(1, uploaded_ws.max_column + 1)):
                 continue
 
             uploaded_name = uploaded_ws.cell(row=row, column=columns_config['name_column_index_uploaded']).value
+            if not uploaded_name:
+                continue
+
             template_row = row - header_row_uploaded + header_row_template + 1
             template_ws.cell(row=template_row, column=columns_config['name_column_index_template']).value = uploaded_name
 
             normalized_name = normalize_title(uploaded_name)
-
-            if (apprenant_info := api_dict.get(normalized_name)):
-                
+            if apprenant_info := api_dict.get(normalized_name):
+                # Remplissage des informations de base
                 template_ws.cell(row=template_row, column=columns_config['code_apprenant_column_index_template']).value = apprenant_info.get('codeApprenant', 'N/A')
                 template_ws.cell(row=template_row, column=columns_config['date_naissance_column_index_template']).value = apprenant_info.get('dateNaissance', 'N/A')
-                
+
+                # Informations du site
                 if 'inscriptions' in apprenant_info and apprenant_info['inscriptions']:
                     template_ws.cell(row=template_row, column=columns_config['nom_site_column_index_template']).value = apprenant_info['inscriptions'][0]['site'].get('nomSite', 'N/A')
 
-                code_groupe = apprenant_info.get('informationsCourantes', {}).get('codeGroupe', None)
-                if code_groupe and code_groupe in groupes_dict:
+                # Informations du groupe
+                code_groupe = str(apprenant_info.get('informationsCourantes', {}).get('codeGroupe'))
+                if code_groupe in groupes_dict:
                     groupe_info = groupes_dict[code_groupe]
                     template_ws.cell(row=template_row, column=columns_config['code_groupe_column_index_template']).value = groupe_info.get('codeGroupe', 'N/A')
                     template_ws.cell(row=template_row, column=columns_config['nom_groupe_column_index_template']).value = groupe_info.get('nomGroupe', 'N/A')
                     template_ws.cell(row=template_row, column=columns_config['etendu_groupe_column_index_template']).value = groupe_info.get('etenduGroupe', 'N/A')
 
-                apprenant_id = apprenant_info.get('codeApprenant')
-                abs_info = absences_summary.get(apprenant_id, {'justified': [], 'unjustified': [], 'delays': []})
+                # Informations des absences
+                apprenant_id = str(apprenant_info.get('codeApprenant'))
+                if apprenant_id in absences_summary:
+                    abs_info = absences_summary[apprenant_id]
+                    template_ws.cell(row=template_row, column=columns_config['duree_justifie_column_index_template']).value = sum_durations(abs_info['justified']) or "00h00"
+                    template_ws.cell(row=template_row, column=columns_config['duree_non_justifie_column_index_template']).value = sum_durations(abs_info['unjustified']) or "00h00"
+                    template_ws.cell(row=template_row, column=columns_config['duree_retard_column_index_template']).value = sum_durations(abs_info['delays']) or "00h00"
 
-                justified_duration = sum_durations(abs_info['justified']) or "00h00"
-                unjustified_duration = sum_durations(abs_info['unjustified']) or "00h00"
-                delays_duration = sum_durations(abs_info['delays']) or "00h00"
-
-                template_ws.cell(row=template_row, column=columns_config['duree_justifie_column_index_template']).value = justified_duration
-                template_ws.cell(row=template_row, column=columns_config['duree_non_justifie_column_index_template']).value = unjustified_duration
-                template_ws.cell(row=template_row, column=columns_config['duree_retard_column_index_template']).value = delays_duration
-
+            # Copie des autres colonnes correspondantes
             for uploaded_title, (src_col, dest_col) in matching_columns.items():
-                src_cell = uploaded_ws.cell(row=row, column=src_col)
-                dest_cell = template_ws.cell(row=template_row, column=dest_col)
-                dest_cell.value = src_cell.value
+                template_ws.cell(row=template_row, column=dest_col).value = uploaded_ws.cell(row=row, column=src_col).value
 
+        # Nettoyage final du template
         for col in range(1, template_ws.max_column + 1):
             if template_ws.cell(row=header_row_template + 1, column=col).value == template_ws.cell(row=header_row_template, column=col).value:
                 template_ws.cell(row=header_row_template + 1, column=col).value = None
-
-        for col in range(1, template_ws.max_column + 1):
             if template_ws.cell(row=header_row_template + 2, column=col).value == "Note":
                 template_ws.cell(row=header_row_template + 2, column=col).value = None
 
-        target_phrase = "* Attention, le total des absences prend en compte toutes les absences aux séances sur la période concernée. S'il existe des absences sur des matières qui ne figurent pas dans le relevé, elles seront également comptabilisées."
-        for row in template_ws.iter_rows():
-            for cell in row:
-                if cell.value == target_phrase:
-                    cell.value = None
-
-        log_excel_data(template_ws)
         return template_wb
 
     except Exception as e:
         logger.error("Failed to process the file", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+    
+def process_periodes_data(periodes_dict):
+    current_periode = None
+    previous_periode = None
+    
+    for periode in periodes_dict.values():
+        date_debut = periode.get('dateDeb')
+        if date_debut is None:
+            logger.warning(f"Missing 'dateDeb' in periode: {periode}")
+            continue
+
+        if current_periode is None or date_debut > current_periode.get('dateDeb', ''):
+            current_periode = periode
+    
+    for periode in periodes_dict.values():
+        date_debut = periode.get('dateDeb')
+        if date_debut is None:
+            continue
+
+        if date_debut < current_periode.get('dateDeb', ''):
+            if previous_periode is None or date_debut > previous_periode.get('dateDeb', ''):
+                previous_periode = periode
+    
+    if current_periode is None:
+        logger.error("No valid periode found with 'dateDeb'")
+    
+    return current_periode, previous_periode
 
 def convert_docx_to_pdf(docx_dir):
     libreoffice_path = 'soffice' # Remplacez par le chemin correct de LibreOffice
@@ -649,18 +629,21 @@ def clean_output_directory(output_dir):
         logger.error(f"Failed to clean output directory: {output_dir}", exc_info=True)
 
 # Fonction pour déduire le nom de la classe à partir du fichier Excel
-def determine_class_name(uploaded_values):
+# Fonction pour déduire le nom de la classe à partir du fichier Excel
+def determine_class_name(uploaded_values, current_periode):
     logger.debug(f"Uploaded values for class name detection: {uploaded_values}")
 
     class_name = None
+    class_id = None
+    periode_code = current_periode.get('codePeriode') if current_periode else None
 
     # Check for specific course names and map to class names accordingly for MAGI and MEFIM
     if any("Baux Commerciaux et Gestion Locative" in value for value in uploaded_values):
-        class_name = "MAGI" 
+        class_name = "MAGI"
     elif any("Rénovation Energétique des Actifs Tertiaires" in value for value in uploaded_values):
-        class_name = "MAGI_S3" 
+        class_name = "MAGI_S3"
     elif any("Business Game Property Management" in value for value in uploaded_values):
-        class_name = "MAGI_S4"  
+        class_name = "MAGI_S4" 
     elif any("Budget d'Exploitation et de Travaux" in value for value in uploaded_values):
         class_name = "MAGI_S2"
     
@@ -714,13 +697,11 @@ def determine_class_name(uploaded_values):
 
     if class_name:
         class_id = class_ids.get(class_name)
-        logger.debug(f"Detected class name: {class_name} with ID: {class_id}")
-        return class_name, class_id
+        logger.debug(f"Detected class name: {class_name} with ID: {class_id} for period: {periode_code}")
+        return class_name, class_id, periode_code
     else:
         logger.error("Failed to detect class name")
-        return None, None
-
-
+        return None, None, periode_code
 
 async def update_progress(session_id: str, progress: int):
     # Mise à jour de la variable globale
@@ -809,11 +790,39 @@ async def upload_and_integrate(doc_urls: DocumentUrls):
         # Ajout de progressions intermédiaires
         progress_data[session_id] = 25
         await update_progress(session_id, 25)
+        
+        headers = {
+            'X-Auth-Token': settings.YPAERO_API_TOKEN,
+            'Content-Type': 'application/json'
+        }
+
+        api_data, groupes_data, absences_data, frequentes_dict, periodes_dict = await fetch_api_data_for_template(headers, None)
+
+        # Vérification plus souple des données
+        if not all(isinstance(data, dict) for data in [api_data, groupes_data, absences_data, frequentes_dict, periodes_dict]):
+            logger.error(f"Unexpected API response format. Received types: api_data: {type(api_data)}, groupes_data: {type(groupes_data)}, absences_data: {type(absences_data)}, frequentes_dict: {type(frequentes_dict)}, periodes_dict: {type(periodes_dict)}")
+            raise HTTPException(status_code=500, detail="Unexpected API response format")
+
+        # Ajoutez des logs pour inspecter les données
+        logger.debug(f"API data received: {api_data}")
+        logger.debug(f"Groupes data received: {groupes_data}")
+        logger.debug(f"Absences data received: {absences_data}")
+        logger.debug(f"Frequentes dict received: {frequentes_dict}")
+        logger.debug(f"Periodes dict received: {periodes_dict}")
+
+        # Traiter les données de période avant de les utiliser
+        current_periode, previous_periode = process_periodes_data(periodes_dict)
+        logger.debug(f"Current periode: {current_periode}")
+        logger.debug(f"Previous periode: {previous_periode}")
+
 
         # Détection du template approprié en fonction des valeurs du fichier Excel
         uploaded_values = [uploaded_ws[cell].value for cell in ['C4', 'F4', 'I4', 'L4', 'O4', 'R4', 'U4', 'X4', 'AA4', 'AD4', 'AG4', 'AJ4', 'AM4', 'AP4', 'AS4', 'AV4', 'AY4', 'BB4', 'BE4', 'BH4', 'BK4', 'BN4', 'BQ4', 'BT4', 'BW4', 'BZ4'] if uploaded_ws[cell].value is not None]
 
-        class_name, class_id = determine_class_name(uploaded_values)
+        class_name, class_id, periode_code = determine_class_name(uploaded_values, current_periode)
+        
+        if not isinstance(api_data, dict) or not isinstance(groupes_data, dict) or not isinstance(absences_data, dict) or not isinstance(periodes_dict, dict):
+            raise HTTPException(status_code=500, detail="Unexpected API response format")
 
         templates = {
             "MAPI": settings.M1_S1_MAPI_TEMPLATE,
@@ -861,9 +870,9 @@ async def upload_and_integrate(doc_urls: DocumentUrls):
             
             "BG_ALT_S1": ['UE 1 – Economie & Gestion', "Économie Générale", "Outils d'Analyse Economique", "Organisations, Stratégies et Innovations I", "UE 2 – Droit", "Introduction au Droit", "Droit des Contrats", "UE 3 – Aménagement & Urbanisme", "Introduction aux Méthodes d'Analyse et de Représentation Spatiale", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Real Estate English", "Panorama de l'Immobilier", "Expression Ecrite et Orale", "Gestion du Travail", "Déontologie et Ethique Professionnelle", "ESPI Career Services", "ESPI Inside"],
             "BG_ALT_S2": ['UE 1 – Economie & Gestion', "Microéconomie I", "Introduction à la Finance", "Marketing & Prospection", "Mathématiques Financières", "UE 2 – Droit", "Droit des Biens", "Droit de la Copropriété I", "Droit des Baux d'Habitation", "UE 3 – Aménagement & Urbanisme", "Histoire Urbaine et Architecture", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Real Estate English", "Panorama de l'Immobilier", "Expression Ecrite et Orale", "Gestion de Projet", "ESPI Career Services", "ESPI Inside"],
-            "BG_ALT_S3": ['UE 1 – Economie & Gestion', "Microéconomie II", "Organisations, Stratégies et Innovations II", "Pratique de Gestion Locative I", "Enjeux de l’Immobilier et Solutions Digitales I", "Transactions Résidentielles", "UE 2 – Droit", "Droit de la Vente Immobilière", "Droit de la Copropriété II", "UE 3 – Aménagement & Urbanisme", "Technologie du Bâtiment", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Real Estate English", "Panorama de l'Immobilier", "Expression Ecrite et Orale", "ESPI Inside"],
+            "BG_ALT_S3": ['UE 1 – Economie & Gestion', "Microéconomie II", "Organisations, Stratégies et Innovations II", "Pratique de Gestion Locative I", "Enjeux de l'Immobilier et Solutions Digitales I", "Transactions Résidentielles", "UE 2 – Droit", "Droit de la Vente Immobilière", "Droit de la Copropriété II", "UE 3 – Aménagement & Urbanisme", "Technologie du Bâtiment", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Real Estate English", "Panorama de l'Immobilier", "Expression Ecrite et Orale", "ESPI Inside"],
             
-            "BG_ALT_S4": ['UE 1 – Economie & Gestion', "Marketing Digital & Environnemental", "Enjeux de l'Immobilier et Solutions Digitales II", "Macroéconomie et Politiques Economiques", "UE 2 – Droit", "Droit du Numérique", "Droit de l’Urbanisme", "Fiscalité Générale", "UE 3 – Aménagement & Urbanisme", "Immobilier et Dynamiques Urbaines", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Real Estate English", "Panorama de l'Immobilier", "Expression Ecrite et Orale", "ESPI Inside"],
+            "BG_ALT_S4": ['UE 1 – Economie & Gestion', "Marketing Digital & Environnemental", "Enjeux de l'Immobilier et Solutions Digitales II", "Macroéconomie et Politiques Economiques", "UE 2 – Droit", "Droit du Numérique", "Droit de l'Urbanisme", "Fiscalité Générale", "UE 3 – Aménagement & Urbanisme", "Immobilier et Dynamiques Urbaines", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Real Estate English", "Panorama de l'Immobilier", "Expression Ecrite et Orale", "ESPI Inside"],
             "BG_ALT_S5": ['UE 1 – Economie & Gestion', "Économie Urbaine", "Pratique de Gestion Locative II", "Management de Projet Immobilier", "UE 2 – Droit", "Droit de la Transaction Immobilière", "Droit de l'Environnement", "Fiscalité Immobilière", "UE 3 – Aménagement & Urbanisme", "Habitat et Développement Durable", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Real Estate English", "Panorama de l'Immobilier", "Expression Ecrite et Orale", "Atelier Urbain I", "Méthodologie de la Recherche", "ESPI Inside"],
             "BG_ALT_S6": ['UE 1 – Economie & Gestion', "Finance Immobilière", "Économie Immobilière", "UE 2 – Droit", "Gestion de la Copropriété", "Droit des Sols et de la Construction", "UE 3 – Aménagement & Urbanisme", "Pathologie du Bâtiment et Suivi de Travaux", "Expertise et Evaluation Immobilière", "UE 4 – Compétences Professionnalisantes", "Immersion Professionnelle", "Atelier Urbain II", "Panorama de l'Immobilier", "Mémoire de Recherche", "Real Estate English", "ESPI Inside"],
             
@@ -1235,9 +1244,18 @@ async def upload_and_integrate(doc_urls: DocumentUrls):
         logger.debug(f"Using template: {template_to_use}")
         logger.debug(f"Column config: {columns_config}")
 
-        # Processer le fichier et créer le fichier Excel final
-        template_wb = await process_file(uploaded_wb, template_to_use, columns_config, class_name)
+        # Mise à jour des informations de groupe pour les apprenants
+        for apprenant_id, frequentes_info in frequentes_dict.items():
+            if apprenant_id in api_data:
+                api_data[apprenant_id]['informations_frequentation'] = frequentes_info
+                
+                if not api_data[apprenant_id].get('informationsCourantes', {}).get('codeGroupe'):
+                    api_data[apprenant_id]['informationsCourantes'] = api_data[apprenant_id].get('informationsCourantes', {})
+                    api_data[apprenant_id]['informationsCourantes']['codeGroupe'] = frequentes_info.get('codeGroupe')
 
+        # Processer le fichier et créer le fichier Excel final
+        # Processer le fichier et créer le fichier Excel final
+        template_wb = await process_file(uploaded_wb, template_to_use, columns_config, class_name, current_periode, previous_periode, api_data, frequentes_dict)
 
         progress_data[session_id] = 35  # Progression à 40%
         await update_progress(session_id, 35)
